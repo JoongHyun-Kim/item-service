@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
@@ -22,8 +23,18 @@ public class BasicItemController {
     public String items(Model model) { // "/basic/items" 경로로 GET이 오면 이 메소드가 호출
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items); //model에 "items"라고 컬렉션이 담긴다.
+
         return "basic/items"; //view 보여주기
     }
+
+    @GetMapping("/{itemId}")
+    public String item(@PathVariable long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+
+        return "basic/item";
+    }
+
 
     /**
      * 테스트용 데이터 추가
